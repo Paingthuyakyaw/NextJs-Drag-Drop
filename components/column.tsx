@@ -1,5 +1,5 @@
-import { Dispatch, DragEvent, SetStateAction } from "react";
-import { Chip } from "@nextui-org/react";
+import { Dispatch, DragEvent, SetStateAction, useState } from "react";
+import { Chip, card } from "@nextui-org/react";
 
 import CardItem from "./card";
 import DropZone from "./dropzone";
@@ -22,7 +22,7 @@ type ColorType =
   | "secondary";
 
 const Column = ({ column, cards, setCards, title }: dataProp) => {
-  // const [active, setActive] = useState<boolean>(false);
+  const [active, setActive] = useState<boolean>(false);
 
   const filterCard = cards.filter((c) => c.column === column);
 
@@ -65,22 +65,32 @@ const Column = ({ column, cards, setCards, title }: dataProp) => {
   const dropZoneActive = (e: DragEvent<HTMLDivElement>) => {
     const indicators = getAllIndicators();
 
-    clearHighlights(indicators);
+    clearHighlights(e, indicators);
     const el = getNearestIndicators(e, indicators);
 
     el?.element.classList.add("bg-blue-500");
   };
 
-  const clearHighlights = (els?: HTMLDivElement[]) => {
+  const clearHighlights = (
+    e: DragEvent<HTMLDivElement>,
+    els?: HTMLDivElement[]
+  ) => {
     const indicators = els || getAllIndicators();
 
-    indicators.forEach((i) => {
-      i.classList.remove("bg-blue-500");
+    indicators.forEach((indicator) => {
+      indicator.classList.remove("bg-blue-500");
     });
+
+    const el = getNearestIndicators(e, indicators);
+
+    if (el && el.element) {
+      el.element.classList.remove("bg-blue-500");
+    }
   };
 
   const handleDragStart = (e: DragEvent<HTMLDivElement>, id: string) => {
     e.dataTransfer.setData("cardId", id);
+    setActive(true);
   };
 
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
@@ -88,13 +98,41 @@ const Column = ({ column, cards, setCards, title }: dataProp) => {
     dropZoneActive(e);
   };
 
-  const handleDragLeave = () => {
-    clearHighlights();
+  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
+    clearHighlights(e);
   };
 
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+    const cardId = e.dataTransfer.getData("cardId");
     const indicators = getAllIndicators();
     const el = getNearestIndicators(e, indicators);
+
+    const beforeId = el.element.dataset.before;
+
+    if (beforeId !== cardId) {
+      // const updateCard = [...cards];
+
+      const findCard = cards.find((c) => c.id === cardId);
+
+      if (!findCard) return;
+      let updateCardColumn: cardProp = { ...findCard, column };
+
+      if (!updateCardColumn) return;
+
+      const newCard = cards.filter((c) => c.id !== updateCardColumn.id);
+
+      const equalBeforeID = beforeId === "-1";
+
+      if (equalBeforeID) {
+        newCard.push(updateCardColumn || []);
+      } else {
+        const insertIndex = newCard.findIndex((c) => c.id === beforeId);
+
+        newCard.splice(insertIndex, 0, updateCardColumn);
+      }
+
+      setCards(newCard);
+    }
   };
 
   return (

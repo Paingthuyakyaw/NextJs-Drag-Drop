@@ -6,11 +6,12 @@ const DropZone = ({
 }: {
   beforeId: string | null;
   column: string;
+  active?: boolean;
 }) => {
   return (
     <div
-      className=" w-full h-2 bg-red-500"
-      data-before={beforeId}
+      className=" w-full h-[2px] "
+      data-before={beforeId || "-1"}
       data-column={column}
     >
       {""}
