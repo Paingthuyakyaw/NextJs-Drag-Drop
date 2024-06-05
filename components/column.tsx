@@ -1,5 +1,5 @@
 import { Dispatch, DragEvent, SetStateAction, useState } from "react";
-import { Chip, card } from "@nextui-org/react";
+import { Chip } from "@nextui-org/react";
 
 import CardItem from "./card";
 import DropZone from "./dropzone";
@@ -107,6 +107,7 @@ const Column = ({ column, cards, setCards, title }: dataProp) => {
     const indicators = getAllIndicators();
     const el = getNearestIndicators(e, indicators);
 
+    clearHighlights(e);
     const beforeId = el.element.dataset.before;
 
     if (beforeId !== cardId) {
