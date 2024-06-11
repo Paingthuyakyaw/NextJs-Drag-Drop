@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import { Button } from "@nextui-org/react";
+import { IconCirclePlusFilled } from "@tabler/icons-react";
 
 import { data } from "@/api";
 import Column from "@/components/column";
@@ -15,8 +17,13 @@ export default function Home() {
 
   return (
     <section className=" px-12 mt-4">
-      <div className="">
+      <div className=" flex items-center justify-between">
         <h4 className=" text-2xl font-bold">Drag&Drop</h4>
+        <div className="">
+          <Button color="primary">
+            <p>Add to cart</p>
+          </Button>
+        </div>
       </div>
       <div className=" grid grid-cols-4 gap-5 mt-5">
         <Column cards={cards} column="task" setCards={setCards} title="TASK" />

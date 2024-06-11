@@ -68,7 +68,7 @@ const Column = ({ column, cards, setCards, title }: dataProp) => {
     clearHighlights(e, indicators);
     const el = getNearestIndicators(e, indicators);
 
-    el?.element.classList.add("bg-blue-500");
+    el?.element.classList.add("bg-danger");
   };
 
   const clearHighlights = (
@@ -78,13 +78,13 @@ const Column = ({ column, cards, setCards, title }: dataProp) => {
     const indicators = els || getAllIndicators();
 
     indicators.forEach((indicator) => {
-      indicator.classList.remove("bg-blue-500");
+      indicator.classList.remove("bg-danger");
     });
 
     const el = getNearestIndicators(e, indicators);
 
     if (el && el.element) {
-      el.element.classList.remove("bg-blue-500");
+      el.element.classList.remove("bg-danger");
     }
   };
 
@@ -136,6 +136,11 @@ const Column = ({ column, cards, setCards, title }: dataProp) => {
     }
   };
 
+  // deleteCard
+  const deleteCard = (id: string) => {
+    return setCards((pre) => pre.filter((card) => card.id !== id));
+  };
+
   return (
     <div className="">
       <div className=" border-b-2 pb-2 flex items-center justify-between">
@@ -154,6 +159,7 @@ const Column = ({ column, cards, setCards, title }: dataProp) => {
           <CardItem
             key={cardItem.id}
             cardItem={cardItem}
+            deleteCard={deleteCard}
             handleDragStart={handleDragStart}
           />
         ))}

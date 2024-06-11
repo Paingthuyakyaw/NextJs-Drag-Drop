@@ -1,5 +1,5 @@
 import React from "react";
-
+import { motion } from "framer-motion";
 const DropZone = ({
   beforeId,
   column,
@@ -9,13 +9,14 @@ const DropZone = ({
   active?: boolean;
 }) => {
   return (
-    <div
-      className=" w-full h-[2px] "
+    <motion.div
+      layout
+      className=" w-full h-[10px] rounded-md "
       data-before={beforeId || "-1"}
       data-column={column}
     >
       {""}
-    </div>
+    </motion.div>
   );
 };
 
