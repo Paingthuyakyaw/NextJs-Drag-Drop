@@ -24,7 +24,7 @@ type ColorType =
 const Column = ({ column, cards, setCards, title }: dataProp) => {
   const [active, setActive] = useState<boolean>(false);
 
-  const filterCard = cards.filter((c) => c.column === column);
+  const filterCard = cards?.filter((c) => c.column === column);
 
   // set Color
   const color = SelectColor.get(column) as ColorType | undefined;
@@ -120,7 +120,7 @@ const Column = ({ column, cards, setCards, title }: dataProp) => {
 
       if (!updateCardColumn) return;
 
-      const newCard = cards.filter((c) => c.id !== updateCardColumn.id);
+      const newCard = cards?.filter((c) => c.id !== updateCardColumn.id);
 
       const equalBeforeID = beforeId === "-1";
 
@@ -138,7 +138,7 @@ const Column = ({ column, cards, setCards, title }: dataProp) => {
 
   // deleteCard
   const deleteCard = (id: string) => {
-    return setCards((pre) => pre.filter((card) => card.id !== id));
+    return setCards((pre) => pre?.filter((card) => card.id !== id));
   };
 
   return (
